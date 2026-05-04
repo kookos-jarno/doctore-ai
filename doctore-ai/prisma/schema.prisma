@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubscriptionTier {
+  FREE
+  PRO
+  SHARP
+  B2B
+}
+
+enum SignalStatus {
+  WATCH
+  ACT
+  PASS
+  EXPIRED
+}
+
+enum BetStatus {
+  PENDING
+  WON
+  LOST
+  VOID
+  CASHED_OUT
+}
+
+enum MarketType {
+  MONEYLINE
+  SPREAD
+  TOTAL
+  PLAYER_PROP
+  FUTURES
+}
+
+model User {
+  id               String           @id @default(cuid())
+  email            String           @unique
+  name             String?
+  subscriptionTier SubscriptionTier @default(FREE)
+  bankrolls        Bankroll[]
+  bets             Bet[]
+  apiKeys          ApiKey[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+model Bankroll {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String   @default("Main bankroll")
+  currency       String   @default("EUR")
+  startingAmount Decimal  @db.Decimal(14, 2)
+  currentAmount  Decimal  @db.Decimal(14, 2)
+  maxStakePct    Decimal  @default(5.00) @db.Decimal(6, 2)
+  kellyFraction  Decimal  @default(0.25) @db.Decimal(6, 4)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  bets Bet[]
+}
+
+model Market {
+  id          String     @id @default(cuid())
+  sport       String
+  league      String
+  eventName   String
+  marketType  MarketType
+  selection   String
+  startsAt    DateTime
+  book        String
+  oddsDecimal Decimal    @db.Decimal(10, 4)
+  line        Decimal?   @db.Decimal(10, 3)
+  capturedAt  DateTime   @default(now())
+  signals     Signal[]
+
+  @@index([sport, league, startsAt])
+  @@index([book, capturedAt])
+}
+
+model Signal {
+  id                 String       @id @default(cuid())
+  marketId           String
+  market             Market       @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  modelProbability   Decimal      @db.Decimal(8, 6)
+  impliedProbability Decimal      @db.Decimal(8, 6)
+  edgePct            Decimal      @db.Decimal(9, 4)
+  expectedValuePct   Decimal      @db.Decimal(9, 4)
+  confidence         Decimal      @db.Decimal(6, 4)
+  recommendedStake   Decimal      @db.Decimal(14, 2)
+  kellyFraction      Decimal      @db.Decimal(8, 6)
+  status             SignalStatus @default(WATCH)
+  reason             String
+  expiresAt          DateTime?
+  createdAt          DateTime     @default(now())
+
+  bets Bet[]
+
+  @@index([status, createdAt])
+  @@index([expectedValuePct])
+}
+
+model Bet {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankrollId  String
+  bankroll    Bankroll  @relation(fields: [bankrollId], references: [id], onDelete: Cascade)
+  signalId    String?
+  signal      Signal?   @relation(fields: [signalId], references: [id], onDelete: SetNull)
+  selection   String
+  book        String
+  oddsTaken   Decimal   @db.Decimal(10, 4)
+  stake       Decimal   @db.Decimal(14, 2)
+  closingOdds Decimal?  @db.Decimal(10, 4)
+  profitLoss  Decimal?  @db.Decimal(14, 2)
+  status      BetStatus @default(PENDING)
+  placedAt    DateTime  @default(now())
+  settledAt   DateTime?
+  notes       String?
+
+  @@index([userId, placedAt])
+  @@index([status])
+}
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label       String
+  keyHash     String    @unique
+  tier        SubscriptionTier @default(B2B)
+  lastUsedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  revokedAt   DateTime?
+
+  @@index([userId])
+}
