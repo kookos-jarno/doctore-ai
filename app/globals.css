@@ -1,0 +1,72 @@
+:root {
+  color-scheme: dark;
+  --bg: #05070d;
+  --panel: #0d1320;
+  --panel-2: #111827;
+  --border: rgba(148, 163, 184, 0.24);
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --soft: #cbd5e1;
+  --green: #8ddfaf;
+  --green-bg: rgba(34, 197, 94, 0.12);
+  --accent: #9fb4d8;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 34rem), var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+button { font: inherit; cursor: pointer; }
+
+.page-shell { width: min(100%, 1280px); margin: 0 auto; padding: clamp(1rem, 4vw, 3rem); }
+.hero-section { max-width: 760px; margin: 0 auto 2.5rem; text-align: center; }
+.brand-pill { display: inline-flex; margin-bottom: 1rem; padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: 999px; color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.hero-section h1 { margin: 0; font-size: clamp(2rem, 6vw, 4.4rem); line-height: 0.96; letter-spacing: -0.06em; }
+.hero-section p { max-width: 620px; margin: 1.25rem auto 0; color: var(--muted); line-height: 1.7; }
+
+.wireframe-grid { display: grid; grid-template-columns: repeat(7, minmax(210px, 1fr)); gap: 1.25rem; align-items: center; overflow-x: auto; padding-bottom: 2rem; }
+.phone-screen { position: relative; min-height: 640px; width: min(100%, 330px); min-width: 300px; margin: 0 auto; padding: 1rem; border: 1px solid var(--border); border-radius: 2.4rem; background: linear-gradient(180deg, #0c1220 0%, #070a12 100%); box-shadow: 0 24px 80px rgba(0,0,0,.42); }
+.phone-screen::before { content: ""; position: absolute; top: .7rem; left: 50%; width: 5rem; height: .38rem; transform: translateX(-50%); border-radius: 999px; background: rgba(15,23,42,.9); }
+.screen-topbar { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem .45rem 0; color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.status-dot { width: .55rem; height: .55rem; border-radius: 999px; background: var(--green); box-shadow: 0 0 0 .32rem var(--green-bg); }
+.screen-header { margin: 1.25rem 0 1rem; }
+.screen-header h2 { margin: 0; font-size: 1.55rem; line-height: 1.08; letter-spacing: -.04em; }
+.screen-header p { margin: .5rem 0 0; color: var(--muted); font-size: .92rem; line-height: 1.45; }
+
+.featured-card, .analysis-card, .auth-card, .chart-card, .filter-group { padding: 1rem; border: 1px solid var(--border); border-radius: 20px; background: rgba(17,24,39,.78); box-shadow: 0 14px 44px rgba(0,0,0,.2); }
+.featured-card.compact, .auth-card { display: grid; gap: .75rem; }
+.card-label, .analysis-card span, .filter-group span { color: var(--green); font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.featured-card h3 { margin: .5rem 0 0; font-size: 1.35rem; letter-spacing: -.04em; }
+.featured-card p { margin: .4rem 0 1rem; color: var(--muted); font-size: .85rem; line-height: 1.5; }
+.metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin: 1rem 0; }
+.metric { padding: .8rem; border: 1px solid var(--border); border-radius: 14px; background: rgba(15,23,42,.68); }
+.metric span { display: block; margin-bottom: .25rem; color: var(--muted); font-size: .72rem; }
+.metric strong { font-size: 1.08rem; }
+.positive, .metric strong.positive { color: var(--green); }
+.primary-button, .secondary-button, .ghost-button { width: 100%; min-height: 2.75rem; border-radius: 999px; border: 1px solid transparent; font-weight: 800; }
+.primary-button { background: linear-gradient(135deg, #d8f8e4, #8ddfaf); color: #04110a; }
+.secondary-button { margin-top: 1rem; border-color: var(--border); background: rgba(148,163,184,.12); color: var(--text); }
+.ghost-button { border-color: var(--border); background: transparent; color: var(--soft); }
+.list-stack, .filter-stack, .benefit-list { display: grid; gap: .75rem; margin-top: 1rem; }
+.feed-row { display: grid; grid-template-columns: auto 1fr auto; gap: .5rem; align-items: center; padding: .8rem; border: 1px solid var(--border); border-radius: 14px; background: rgba(13,19,32,.78); }
+.feed-row span { color: var(--accent); font-size: .72rem; font-weight: 800; }
+.feed-row strong, .benefit-list span { color: var(--soft); font-size: .86rem; }
+.feed-row em { color: var(--green); font-size: .78rem; font-style: normal; font-weight: 800; }
+.analysis-card ul { margin: .75rem 0 0; padding-left: 1.1rem; color: var(--soft); font-size: .86rem; line-height: 1.55; }
+.benefit-list span { padding: .8rem; border: 1px solid var(--border); border-radius: 14px; background: rgba(13,19,32,.7); }
+.filter-group div { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.filter-group button { min-height: 2.2rem; padding: 0 .78rem; border: 1px solid var(--border); border-radius: 999px; background: rgba(148,163,184,.1); color: var(--soft); }
+.filter-group button:first-child { border-color: rgba(141,223,175,.45); background: var(--green-bg); color: var(--green); }
+.chart-card { height: 160px; overflow: hidden; }
+.chart-card svg { width: 100%; height: 100%; }
+.chart-card path { fill: none; stroke: var(--green); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.chart-card circle { fill: var(--green); }
+.flow-arrow { display: grid; gap: .5rem; place-items: center; min-width: 7rem; color: var(--muted); text-align: center; }
+.flow-arrow span { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.flow-arrow div { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border: 1px solid var(--border); border-radius: 999px; background: rgba(15,23,42,.82); color: var(--soft); }
+@media (max-width: 960px) { .wireframe-grid { grid-template-columns: 1fr; overflow-x: visible; } .flow-arrow { min-width: 0; } .flow-arrow div { transform: rotate(90deg); } }
+@media (max-width: 420px) { .page-shell { padding: 1rem; } .phone-screen { min-width: 0; width: 100%; min-height: 600px; } }
